@@ -4,9 +4,15 @@ import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 
 function App() {
   return (
-      <SafeAreaView>
-          <View >
-              <Text style={styles.container}>Hello World</Text>
+      <SafeAreaView style={styles.container}>
+          <View style={styles.upper_view_container}>
+              <Text >Hello World</Text>
+          </View>
+          <View style={styles.center_view_container}>
+              <Text >Hello World2</Text>
+          </View>
+          <View style={styles.bottom_view_container}>
+              <Text >Merhaba Dünya</Text>
           </View>
       </SafeAreaView>
   );
@@ -14,14 +20,20 @@ function App() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    upper_view_container: {
+        flex: 1,
         backgroundColor: 'red',
-        margin: 10,
-        padding: 10,
-        borderRadius: 5,
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
+    },
+    center_view_container: {
+        flex: 1,
+        backgroundColor: 'yellow',
+    },
+    bottom_view_container: {
+        flex: 2,
+        backgroundColor: 'blue',
     },
 });
 
