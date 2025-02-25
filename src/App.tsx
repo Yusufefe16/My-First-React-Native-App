@@ -1,60 +1,92 @@
 import React from 'react';
-import {Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
-import news_data from './news_data.json';
-import news_banner_data from './news_banner_data.json';
-import NewsCard from './components/NewsCard';
+import { View, Text, Image, FlatList, StyleSheet, TextInput } from 'react-native';
+import products from './components/product_data.json';
 
-interface News {
-    u_id: number;
-    author: string;
+interface Product {
+    id: number;
     title: string;
-    description: string;
-    imageUrl: string;
+    imgURL: string;
+    price: string;
+    inStock: boolean;
 }
 
-function App() {
-    const renderNews = ({ item }: { item: News }) => <NewsCard news={item} />
-
+const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.header_text}>News</Text>
-                <FlatList
-                    ListHeaderComponent={()=> (
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            {
-                                news_banner_data.map(
-                                    (bannerNews: { id: number; imageUrl: string}) =>
-                                        <Image style={styles.banner_image} source={{ uri: bannerNews.imageUrl}} />
-                                )
-                            }
-                        </ScrollView>
-                    )}
-                    keyExtractor={(item) => item.u_id.toString()}
-                    data={news_data}
-                    renderItem={renderNews}
-                />
-        </SafeAreaView>
+        <View style={styles.card}>
+            <Image source={{ uri: product.imgURL }} style={styles.image} />
+            <Text style={styles.title}>{product.title}</Text>
+            <Text style={styles.price}>{product.price}</Text>
+            {!product.inStock && <Text style={styles.outOfStock}>STOKTA YOK</Text>}
+        </View>
     );
-}
+};
+
+const App: React.FC = () => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.header}>YUSUF STORE</Text>
+            <TextInput style={styles.searchBar} placeholder="Ara..." />
+            <FlatList
+                data={products}
+                renderItem={({ item }) => <ProductCard product={item} />}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+            />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eceff1',
+        backgroundColor: '#fff',
+        paddingHorizontal: 10,
+        paddingTop: 20,
     },
-    banner_image: {
-        height: Dimensions.get('window').height / 5,
-        width: Dimensions.get('window').width / 2,
-    },
-    header_text: {
+    header: {
+        fontSize: 24,
         fontWeight: 'bold',
-        fontSize: 50,
-    }
+        color: '#800080',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    searchBar: {
+        height: 40,
+        backgroundColor: '#f1f1f1',
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+    },
+    card: {
+        flex: 1,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 8,
+        padding: 10,
+        margin: 5,
+        alignItems: 'center',
+    },
+    image: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain',
+    },
+    title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 5,
+    },
+    price: {
+        fontSize: 14,
+        color: '#444',
+        marginTop: 5,
+    },
+    outOfStock: {
+        fontSize: 12,
+        color: 'red',
+        fontWeight: 'bold',
+        marginTop: 5,
+    },
 });
 
-
-
-
-
 export default App;
-
